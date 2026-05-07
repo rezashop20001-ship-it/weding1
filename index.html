@@ -6,28 +6,32 @@
     <title>Undangan Digital - Aliandra & Adinda</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Montserrat:wght@300;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
+            width: 100%;
             overflow: hidden;
-            background-color: #000;
+            background-color: #d1d5db; /* Warna abu-abu dasar */
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Container Utama */
-        .invitation-container {
+        /* Container Utama Sesuai Layar HP */
+        .main-wrapper {
             position: relative;
             width: 100%;
-            max-width: 500px; /* Standar Mobile Web */
+            max-width: 450px; /* Ukuran maksimal lebar HP */
             height: 100vh;
             margin: 0 auto;
+            background-color: #fff;
             overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
         }
 
-        /* LAYER 1: Base Wallpaper */
-        .layer-base {
+        /* LAYER 1: Background Paling Dasar */
+        .bg-wallpaper {
             position: absolute;
             inset: 0;
             z-index: 1;
@@ -35,127 +39,130 @@
             background-size: cover;
         }
 
-        /* LAYER 2: Rumah Adat */
-        .layer-house {
+        /* LAYER 2: Rumah Adat (Di bawah, di belakang frame) */
+        .rumah-adat {
             position: absolute;
-            bottom: 50px;
+            bottom: 60px; /* Jarak dari bawah agar tidak tertutup bunga semua */
             left: 0;
             width: 100%;
             z-index: 2;
-            pointer-events: none;
+            object-fit: contain;
         }
 
-        /* LAYER 3: Frame Ornament */
-        .layer-frame {
+        /* LAYER 3: Bingkai / Frame Ornamen (Menempel ke Atas) */
+        .frame-ornament {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 3;
-            background: url('frame_ornament.png') no-repeat center center;
-            background-size: contain;
+            background: url('frame_ornament.png') no-repeat center top;
+            background-size: 100% 100%; /* Memaksa bingkai mengisi layar */
             pointer-events: none;
-            opacity: 0.8;
         }
 
-        /* LAYER 4: Content (Text & Button) */
-        .layer-content {
+        /* LAYER 4: Konten (Logo & Tombol) */
+        .content-area {
             position: absolute;
-            inset: 0;
-            z-index: 4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            top: 48%; /* Posisi tengah agak ke atas sesuai bingkai */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
             text-align: center;
-            padding-bottom: 100px;
+            width: 85%;
         }
 
-        .logo-initial {
-            width: 220px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.3));
+        .logo-aa {
+            width: 100%;
+            max-width: 260px;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
         }
 
-        .btn-open {
-            background-color: #8B5E34; /* Warna cokelat sesuai video */
-            color: #fff;
+        .btn-buka {
+            background-color: #8b5e34; /* Cokelat Kayu */
+            color: #ffffff;
             padding: 12px 35px;
             border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
         }
 
-        /* DEKORASI FLORAL (Z-INDEX: 20+) */
+        .btn-buka:active {
+            transform: scale(0.95);
+        }
+
+        /* LAYER 5: Sistem Bunga (Foreground - Paling Depan) */
         .floral {
             position: absolute;
-            z-index: 20;
+            z-index: 20; /* Menimpa frame dan rumah */
             pointer-events: none;
         }
 
-        /* Atas */
-        .f-top-left { top: 0; left: 0; width: 40%; }
-        .f-top-right { top: 0; right: 0; width: 40%; }
-        .f-top-mid-left { top: 10px; left: 15%; width: 25%; z-index: 21; }
-        .f-top-mid-right { top: 10px; right: 15%; width: 25%; z-index: 21; }
+        /* Bunga Atas */
+        .f-top-l { top: 0; left: 0; width: 45%; }
+        .f-top-r { top: 0; right: 0; width: 45%; }
+        .f-top-mid-l { top: 15px; left: 10%; width: 30%; z-index: 21; }
+        .f-top-mid-r { top: 15px; right: 10%; width: 30%; z-index: 21; }
 
-        /* Bawah */
-        .f-bot-left { bottom: 0; left: 0; width: 35%; }
-        .f-bot-right { bottom: 0; right: 0; width: 35%; }
-        .f-bot-mid-left { bottom: 0; left: 10%; width: 30%; z-index: 22; }
-        .f-bot-mid-right { bottom: 0; right: 10%; width: 30%; z-index: 22; }
+        /* Bunga Bawah (Tempel ke Dasar) */
+        .f-bot-l { bottom: -5px; left: -5px; width: 40%; }
+        .f-bot-r { bottom: -5px; right: -5px; width: 40%; }
         
-        /* Bawah Tengah (Layering Depth) */
-        .f-bot-center-back { bottom: -5px; left: 50%; transform: translateX(-50%); width: 50%; z-index: 19; opacity: 0.9; }
-        .f-bot-center-front { bottom: -10px; left: 50%; transform: translateX(-50%); width: 60%; z-index: 25; }
+        /* Bunga Tengah Bawah (Penutup Pondasi) */
+        .f-bot-center-back { 
+            bottom: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            z-index: 19; /* Di belakang bunga utama tapi depan rumah */
+        }
+        .f-bot-center-front { 
+            bottom: -15px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 100%; 
+            z-index: 25; /* Paling depan sendiri */
+        }
 
-        /* Burung Terbang */
-        .bird-anim {
+        /* Burung */
+        .bird-gif {
             position: absolute;
-            top: 15%;
-            left: 20%;
-            width: 80px;
-            z-index: 10;
-            opacity: 0.7;
-        }
-
-        /* Animasi Sederhana */
-        .fade-in-up {
-            animation: fadeInUp 1.5s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            top: 12%;
+            right: 15%;
+            width: 70px;
+            z-index: 4;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
-    <div class="invitation-container">
+    <div class="main-wrapper">
         
-        <div class="layer-base"></div>
-        <img src="rumah_adat.png" alt="Rumah Adat" class="layer-house">
-        <div class="layer-frame"></div>
+        <div class="bg-wallpaper"></div>
+        <img src="rumah_adat.png" alt="Rumah Adat" class="rumah-adat">
+        
+        <div class="frame-ornament"></div>
 
-        <img src="burung_terbang.gif" alt="Bird" class="bird-anim">
+        <img src="burung_terbang.gif" alt="Bird" class="bird-gif">
 
-        <div class="layer-content fade-in-up">
-            <img src="logo_initial_gold.png" alt="A&A" class="logo-initial">
-            <button class="btn-open">BUKA UNDANGAN</button>
+        <div class="content-area">
+            <img src="logo_initial_gold.png" alt="A & A" class="logo-aa">
+            <button class="btn-buka">BUKA UNDANGAN</button>
         </div>
 
-        <img src="bunga_kiri_atas.png" class="floral f-top-left">
-        <img src="bunga_kanan_atas.png" class="floral f-top-right">
-        <img src="bunga_tengah_atas_kiri.png" class="floral f-top-mid-left">
-        <img src="bunga_tengah_atas_kanan.png" class="floral f-top-mid-right">
+        <img src="bunga_kiri_atas.png" class="floral f-top-l">
+        <img src="bunga_kanan_atas.png" class="floral f-top-r">
+        <img src="bunga_tengah_atas_kiri.png" class="floral f-top-mid-l">
+        <img src="bunga_tengah_atas_kanan.png" class="floral f-top-mid-r">
 
-        <img src="bunga_bawah_kiri.png" class="floral f-bot-left">
-        <img src="bunga_bawah_kanan.png" class="floral f-bot-right">
-        <img src="bunga_tengah_bawah_kiri.png" class="floral f-bot-mid-left">
-        <img src="bunga_tengah_bawah_kanan.png" class="floral f-bot-mid-right">
+        <img src="bunga_bawah_kiri.png" class="floral f-bot-l">
+        <img src="bunga_bawah_kanan.png" class="floral f-bot-r">
         
         <img src="bunga_bawah_tengah_back.png" class="floral f-bot-center-back">
         <img src="bunga_bawah_tengah.png" class="floral f-bot-center-front">
