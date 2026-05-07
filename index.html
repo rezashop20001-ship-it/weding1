@@ -3,211 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Undangan Digital - A & A</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <title>Undangan Digital A&A - Perbaikan Tata Letak</title>
     <style>
-        /* RESET & BASE */
+        /* RESET DASAR */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
             width: 100%;
             height: 100%;
-            /* Mengizinkan scroll sedikit agar pull-to-refresh aktif */
-            overflow-y: auto;
-            overflow-x: hidden;
-            background-color: #1a1a1a;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-overflow-scrolling: touch;
+            overflow: hidden; /* Mengunci layar utama agar elemen dekorasi presisi */
+            background-color: #f0f0f0;
+            font-family: 'Georgia', serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* CONTAINER UTAMA */
-        .main-container {
+        /* CONTAINER UTAMA (COVER) */
+        .cover-wrapper {
             position: relative;
             width: 100%;
-            /* Menggunakan variabel vh agar presisi di mobile */
-            height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
-            overflow: hidden; /* Mengunci elemen di dalam agar tidak meluber */
+            height: 100vh; /* Tinggi penuh layar */
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
-        /* --- LAYER 1: WALLPAPER DASAR --- */
-        .layer-1-wallpaper {
+        /* --- LAYER 1: WALLPAPER BACKGROUND --- */
+        .bg-wallpaper {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Memenuhi layar */
             z-index: 1;
         }
 
-        /* --- LAYER 2: RUMAH ADAT --- */
-        .layer-2-rumah {
+        /* --- LAYER 2: RUMAH ADAT (DI BELAKANG BINGKAI) --- */
+        .rumah-adat {
             position: absolute;
-            bottom: 0;
-            width: 100%;
+            bottom: 10%; /* Sedikit diangkat agar fondasi tidak tertutup bunga */
+            width: 90%;
             height: auto;
-            max-height: 45%;
+            max-height: 40%;
             object-fit: contain;
             z-index: 2;
-            /* Efek fade halus di bagian bawah */
-            mask-image: linear-gradient(to top, rgba(0,0,0,1) 80%, rgba(0,0,0,0));
-        }
-
-        /* --- LAYER 3: FRAME ORNAMEN --- */
-        .layer-3-frame {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 92%; height: 92%;
-            object-fit: contain;
-            z-index: 3;
-            pointer-events: none;
             opacity: 0.9;
         }
 
-        /* --- LAYER 4: KONTEN (LOGO & TOMBOL) --- */
-        .layer-4-content {
+        /* --- LAYER 3: BINGKAI ORNAMEN (FIXED TOP) --- */
+        .frame-top {
+            position: absolute;
+            top: 0; /* Menempel paling atas */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; /* Lebar penuh */
+            height: 100%; /* Tinggi penuh agar proporsi terjaga */
+            object-fit: contain; /* Bingkai utuh, tidak terpotong */
+            object-position: top; /* Prioritaskan bagian atas */
+            z-index: 3;
+            pointer-events: none; /* Biar tombol di bawahnya bisa di-klik */
+        }
+
+        /* --- LAYER 4: KONTEN UTAMA (LOGO & TOMBOL) --- */
+        .content-container {
             position: relative;
-            z-index: 10;
+            z-index: 10; /* Di atas bingkai dan rumah */
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: -20px;
+            gap: 30px;
+            margin-top: -50px; /* Menyesuaikan posisi vertikal agar pas di tengah bingkai */
         }
 
-        .logo-initial {
-            width: 200px; /* Ukuran A&A */
+        .logo-aa {
+            width: 220px; /* Ukuran Logo Emas */
             height: auto;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
 
-        .btn-open {
-            background: linear-gradient(135deg, #96693d 0%, #724e2c 100%);
-            color: #fff;
-            padding: 14px 40px;
-            border-radius: 50px;
+        .btn-buka {
+            background-color: #96693d; /* Warna coklat sesuai contoh */
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
             text-decoration: none;
-            font-weight: 600;
             font-size: 14px;
-            letter-spacing: 2px;
             text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.1);
+            letter-spacing: 2px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
-        .btn-open:active {
-            transform: scale(0.95);
-        }
+        .btn-buka:active { transform: scale(0.95); }
 
-        /* --- ELEMEN BURUNG --- */
-        .bird-anim {
+        /* --- LAYER 5: DEKORASI FLORAL (PENTING!) --- */
+        .floral {
             position: absolute;
-            top: 12%;
-            left: 25%;
-            width: 70px;
-            z-index: 4;
-            opacity: 0.6;
-            pointer-events: none;
+            pointer-events: none; /* Wajib agar tidak menghalangi klik */
+            z-index: 20; /* Paling tinggi agar menimpa bingkai dan rumah */
         }
 
-        /* --- SISTEM DEKORASI FLORAL (Z-INDEX 20+) --- */
-        .floral-element {
-            position: absolute;
-            pointer-events: none;
-            z-index: 20;
-        }
+        /* Area Atas (Sesuai Coretan Pink) */
+        .f-top-left { top: 0; left: 0; width: 35%; }
+        .f-top-right { top: 0; right: 0; width: 35%; }
 
-        /* Bagian Atas */
-        .f-top-left { top: -2%; left: -5%; width: 45%; }
-        .f-top-right { top: -2%; right: -5%; width: 45%; }
-        .f-top-mid-left { top: 0; left: 15%; width: 35%; z-index: 21; }
-        .f-top-mid-right { top: 0; right: 15%; width: 35%; z-index: 21; }
-
-        /* Bagian Bawah */
-        .f-bot-left { bottom: -2%; left: -5%; width: 50%; z-index: 25; }
-        .f-bot-right { bottom: -2%; right: -5%; width: 50%; z-index: 25; }
-        .f-bot-mid-left { bottom: 0; left: 10%; width: 40%; z-index: 24; }
-        .f-bot-mid-right { bottom: 0; right: 10%; width: 40%; z-index: 24; }
+        /* Area Bawah (Sesuai Coretan Hijau & Teal) */
+        /* Kita kunci di bottom: 0 agar tidak hilang */
+        .f-bot-left { bottom: 0; left: 0; width: 45%; z-index: 25; }
+        .f-bot-right { bottom: 0; right: 0; width: 45%; z-index: 25; }
         
+        /* Bunga Tengah Bawah (Teal) */
         .f-bot-center { 
-            bottom: -5px; left: 50%; 
+            bottom: -10px; /* Sedikit diturunkan agar menyatu dengan dasar */
+            left: 50%; 
             transform: translateX(-50%); 
-            width: 70%; z-index: 26; 
-        }
-        .f-bot-center-back { 
-            bottom: 5px; left: 50%; 
-            transform: translateX(-50%); 
-            width: 85%; z-index: 23; 
-            opacity: 0.7;
+            width: 70%; 
+            z-index: 26; /* Paling depan */
         }
 
-        /* Animasi Lembut untuk Floral */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .floating { animation: float 4s ease-in-out infinite; }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <img src="wallpaper.png" class="layer-1-wallpaper">
+    <div class="cover-wrapper">
+        <img src="wallpaper.png" class="bg-wallpaper" alt="Background">
 
-        <img src="rumah_adat.png" class="layer-2-rumah">
+        <img src="rumah_adat.png" class="rumah-adat" alt="Rumah Adat">
 
-        <img src="frame_ornament.png" class="layer-3-frame">
+        <img src="frame_ornament.png" class="frame-top" alt="Frame Ornament">
 
-        <img src="burung_terbang.gif" class="bird-anim">
-
-        <div class="layer-4-content">
-            <img src="logo_aa.png" class="logo-initial" alt="A&A">
-            <a href="javascript:void(0)" class="btn-open">Buka Undangan</a>
+        <div class="content-container">
+            <img src="logo_aa_gold.png" class="logo-aa" alt="Logo A&A">
+            <a href="#" class="btn-buka">Buka Undangan</a>
         </div>
 
-        <img src="bunga_kiri_atas.png" class="floral-element f-top-left">
-        <img src="bunga_kanan_atas.png" class="floral-element f-top-right">
-        <img src="bunga_tengah_atas_kiri.png" class="floral-element f-top-mid-left">
-        <img src="bunga_tengah_atas_kanan.png" class="floral-element f-top-mid-right">
+        <img src="bunga_kiri_atas.png" class="floral f-top-left" alt="Floral Top Left">
+        <img src="bunga_kanan_atas.png" class="floral f-top-right" alt="Floral Top Right">
 
-        <img src="bunga_bawah_tengah_back.png" class="floral-element f-bot-center-back">
-        <img src="bunga_bawah_kiri.png" class="floral-element f-bot-left">
-        <img src="bunga_bawah_kanan.png" class="floral-element f-bot-right">
-        <img src="bunga_tengah_bawah_kiri.png" class="floral-element f-bot-mid-left">
-        <img src="bunga_tengah_bawah_kanan.png" class="floral-element f-bot-mid-right">
-        <img src="bunga_bawah_tengah.png" class="floral-element f-bot-center">
+        <img src="bunga_kiri_bawah.png" class="floral f-bot-left" alt="Floral Bottom Left">
+        <img src="bunga_kanan_bawah.png" class="floral f-bot-right" alt="Floral Bottom Right">
+        <img src="bunga_bawah_tengah.png" class="floral f-bot-center" alt="Floral Bottom Center">
+
     </div>
 
-    <script>
-        // Memperbaiki masalah 100vh di browser mobile (Address bar)
-        const documentHeight = () => {
-            const doc = document.documentElement;
-            doc.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-        };
-        window.addEventListener('resize', documentHeight);
-        documentHeight();
-
-        // Mencegah bounce scroll berlebih tapi tetap izinkan refresh
-        let ts;
-        document.addEventListener('touchstart', function (e) {
-            ts = e.touches[0].clientY;
-        }, {passive: false});
-
-        document.addEventListener('touchmove', function (e) {
-            let te = e.touches[0].clientY;
-            // Jika mencoba scroll ke atas saat sudah di posisi 0, biarkan browser handle (untuk refresh)
-            if (window.scrollY <= 0 && te > ts) {
-                return; 
-            }
-        }, {passive: false});
-    </script>
 </body>
 </html>
