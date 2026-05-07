@@ -3,71 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Digital - Anti Ngumpet</title>
+    <title>Undangan Digital - Final Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: 'Montserrat', sans-serif; }
 
-        body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden; background-color: #1a1a1a; font-family: 'Montserrat', sans-serif; }
-
-        /* Container harus relatif dan punya overflow hidden agar bunga nggak bikin scroll */
         .main-wrapper {
             position: relative;
             width: 100%;
             max-width: 450px;
-            height: 100dvh; /* Menggunakan dynamic viewport height */
+            height: 100vh;
             margin: 0 auto;
             background-color: #fff;
             overflow: hidden;
         }
 
-        /* LAYER DASAR (1-10) */
+        /* LAYER DASAR */
         .bg-wallpaper { position: absolute; inset: 0; z-index: 1; background: url('wallpaper.png') no-repeat center center; background-size: cover; }
-        .rumah-adat { position: absolute; bottom: 130px; left: 0; width: 100%; z-index: 2; object-fit: contain; }
+        .rumah-adat { position: absolute; bottom: 140px; left: 0; width: 100%; z-index: 2; object-fit: contain; }
         .frame-ornament { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; background: url('frame_ornament.png') no-repeat center top; background-size: 100% 100%; pointer-events: none; }
 
-        /* KONTEN (20) */
-        .content-area { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); z-index: 20; text-align: center; width: 80%; }
+        /* KONTEN */
+        .content-area { position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center; width: 80%; }
         .logo-aa { width: 100%; max-width: 200px; margin-bottom: 15px; }
         .btn-buka { background: #8b5e34; color: #fff; padding: 10px 25px; border-radius: 50px; font-weight: 600; font-size: 12px; }
 
-        /* SISTEM FLORAL (Z-INDEX SUPER TINGGI) */
-        .floral { position: absolute; pointer-events: none; display: block !important; }
+        .floral { position: absolute; pointer-events: none; }
 
-        /* 1. Area Pink (Tengah Atas Samping) */
+        /* AREA PINK (Tengah Atas) */
         .f-pink-l { top: 25%; left: -5%; width: 35%; z-index: 50; } 
         .f-pink-r { top: 25%; right: -5%; width: 35%; z-index: 50; }
 
-        /* 2. Area Hijau (Tengah Bawah Samping - Renggangkan dari pink) */
-        .f-hijau-l { bottom: 25%; left: -8%; width: 35%; z-index: 55; } 
-        .f-hijau-r { bottom: 25%; right: -8%; width: 35%; z-index: 55; }
+        /* AREA HIJAU (Tengah Bawah) - DIBAWAHIN LAGI BIAR NYAMBUNG KE BAWAH */
+        .f-hijau-l { bottom: 15%; left: -5%; width: 35%; z-index: 60; } 
+        .f-hijau-r { bottom: 15%; right: -5%; width: 35%; z-index: 60; }
 
-        /* 3. Area Biru (BUNGA BAWAH YANG TADI NGUMPET) */
+        /* AREA BIRU (BUNGA BAWAH) - PAKSA TIMBUL */
+        /* Kiri & Kanan Bawah: Kita pake bottom: 20px biar dia naik ke area layar */
+        .f-biru-l { bottom: 20px; left: -10px; width: 45%; z-index: 2000 !important; } 
+        .f-biru-r { bottom: 20px; right: -10px; width: 45%; z-index: 2000 !important; }
         
-        /* Bunga Tengah Bawah BACK (Di belakang bunga utama tengah) */
-        .f-biru-center-back {
-            bottom: 5px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 85%;
-            z-index: 80; /* Di depan rumah tapi di belakang bunga depan */
-            opacity: 0.9;
-        }
+        /* Bunga Tengah Bawah (Paling depan, nutup pondasi) */
+        .f-biru-center-back { bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; z-index: 1500; opacity: 0.9; }
+        .f-biru-center-front { bottom: 0px; left: 50%; transform: translateX(-50%); width: 105%; z-index: 3000 !important; }
 
-        /* Bunga Kiri & Kanan Bawah */
-        .f-biru-l { bottom: -5px; left: -10px; width: 45%; z-index: 100; } 
-        .f-biru-r { bottom: -5px; right: -10px; width: 45%; z-index: 100; }
-        
-        /* Bunga Tengah Bawah FRONT (Paling Depan Sendiri) */
-        .f-biru-center-front { 
-            bottom: -15px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 100%; 
-            z-index: 150; /* Z-index tertinggi */
-        }
-
-        /* Bunga Pojok Atas */
+        /* Pojok Atas */
         .f-atas-l { top: 0; left: 0; width: 40%; z-index: 40; }
         .f-atas-r { top: 0; right: 0; width: 40%; z-index: 40; }
     </style>
