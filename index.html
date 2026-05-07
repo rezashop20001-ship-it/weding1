@@ -2,31 +2,40 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Digital - Section Cover</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Undangan Digital - A & A</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
+        /* RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
-            height: 100%;
             width: 100%;
-            overflow: hidden;
-            font-family: 'Georgia', serif;
+            height: 100%;
+            /* Mengizinkan scroll sedikit agar pull-to-refresh aktif */
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Container Utama */
-        .cover-section {
+        /* CONTAINER UTAMA */
+        .main-container {
             position: relative;
             width: 100%;
+            /* Menggunakan variabel vh agar presisi di mobile */
             height: 100vh;
-            background-color: #f4f4f4;
+            height: calc(var(--vh, 1vh) * 100);
+            overflow: hidden; /* Mengunci elemen di dalam agar tidak meluber */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
         }
 
-        /* --- LAYER 1: Background Dasar --- */
+        /* --- LAYER 1: WALLPAPER DASAR --- */
         .layer-1-wallpaper {
             position: absolute;
             top: 0; left: 0;
@@ -35,29 +44,32 @@
             z-index: 1;
         }
 
-        /* --- LAYER 2: Rumah Adat --- */
+        /* --- LAYER 2: RUMAH ADAT --- */
         .layer-2-rumah {
             position: absolute;
             bottom: 0;
             width: 100%;
             height: auto;
-            max-height: 50%;
+            max-height: 45%;
             object-fit: contain;
             z-index: 2;
+            /* Efek fade halus di bagian bawah */
+            mask-image: linear-gradient(to top, rgba(0,0,0,1) 80%, rgba(0,0,0,0));
         }
 
-        /* --- LAYER 3: Frame Ornamen --- */
+        /* --- LAYER 3: FRAME ORNAMEN --- */
         .layer-3-frame {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 95%; height: 95%;
+            width: 92%; height: 92%;
             object-fit: contain;
             z-index: 3;
             pointer-events: none;
+            opacity: 0.9;
         }
 
-        /* --- LAYER 4: Konten Utama --- */
+        /* --- LAYER 4: KONTEN (LOGO & TOMBOL) --- */
         .layer-4-content {
             position: relative;
             z-index: 10;
@@ -65,97 +77,137 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            margin-top: -50px; /* Menyesuaikan posisi agar di tengah frame */
+            margin-top: -20px;
         }
 
-        .logo-aa { width: 180px; height: auto; }
-        
-        .btn-buka {
-            background-color: #96693d;
-            color: white;
-            padding: 12px 35px;
-            border-radius: 25px;
+        .logo-initial {
+            width: 200px; /* Ukuran A&A */
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        .btn-open {
+            background: linear-gradient(135deg, #96693d 0%, #724e2c 100%);
+            color: #fff;
+            padding: 14px 40px;
+            border-radius: 50px;
             text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* --- LAYER DEKORASI FLORAL (Z-INDEX 20+) --- */
-        .floral {
+        .btn-open:active {
+            transform: scale(0.95);
+        }
+
+        /* --- ELEMEN BURUNG --- */
+        .bird-anim {
             position: absolute;
+            top: 12%;
+            left: 25%;
+            width: 70px;
+            z-index: 4;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* --- SISTEM DEKORASI FLORAL (Z-INDEX 20+) --- */
+        .floral-element {
+            position: absolute;
+            pointer-events: none;
             z-index: 20;
-            pointer-events: none; /* Agar tidak menghalangi klik tombol */
         }
 
-        /* Atas */
-        .bunga-kiri-atas { top: 0; left: 0; width: 40%; }
-        .bunga-kanan-atas { top: 0; right: 0; width: 40%; }
-        .bunga-tengah-atas-kiri { top: 0; left: 15%; width: 30%; z-index: 21; }
-        .bunga-tengah-atas-kanan { top: 0; right: 15%; width: 30%; z-index: 21; }
+        /* Bagian Atas */
+        .f-top-left { top: -2%; left: -5%; width: 45%; }
+        .f-top-right { top: -2%; right: -5%; width: 45%; }
+        .f-top-mid-left { top: 0; left: 15%; width: 35%; z-index: 21; }
+        .f-top-mid-right { top: 0; right: 15%; width: 35%; z-index: 21; }
 
-        /* Bawah */
-        .bunga-kiri-bawah { bottom: 0; left: 0; width: 45%; z-index: 25; }
-        .bunga-kanan-bawah { bottom: 0; right: 0; width: 45%; z-index: 25; }
-        .bunga-tengah-bawah-kiri { bottom: 0; left: 10%; width: 35%; z-index: 24; }
-        .bunga-tengah-bawah-kanan { bottom: 0; right: 10%; width: 35%; z-index: 24; }
+        /* Bagian Bawah */
+        .f-bot-left { bottom: -2%; left: -5%; width: 50%; z-index: 25; }
+        .f-bot-right { bottom: -2%; right: -5%; width: 50%; z-index: 25; }
+        .f-bot-mid-left { bottom: 0; left: 10%; width: 40%; z-index: 24; }
+        .f-bot-mid-right { bottom: 0; right: 10%; width: 40%; z-index: 24; }
         
-        .bunga-bawah-tengah { 
-            bottom: 0; left: 50%; 
+        .f-bot-center { 
+            bottom: -5px; left: 50%; 
             transform: translateX(-50%); 
-            width: 60%; z-index: 26; 
+            width: 70%; z-index: 26; 
         }
-        .bunga-bawah-tengah-back { 
+        .f-bot-center-back { 
             bottom: 5px; left: 50%; 
             transform: translateX(-50%); 
-            width: 70%; z-index: 23; 
-            opacity: 0.8;
-        }
-
-        /* --- ELEMEN BURUNG (GIF) --- */
-        .burung-gif {
-            position: absolute;
-            top: 15%;
-            left: 20%;
-            width: 80px;
-            z-index: 5;
+            width: 85%; z-index: 23; 
             opacity: 0.7;
         }
 
+        /* Animasi Lembut untuk Floral */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
     </style>
 </head>
 <body>
 
-    <section class="cover-section">
-        <img src="wallpaper.png" class="layer-1-wallpaper" alt="Background">
+    <div class="main-container">
+        <img src="wallpaper.png" class="layer-1-wallpaper">
 
-        <img src="rumah_adat.png" class="layer-2-rumah" alt="Rumah Adat">
+        <img src="rumah_adat.png" class="layer-2-rumah">
 
-        <img src="frame_ornament.png" class="layer-3-frame" alt="Frame">
+        <img src="frame_ornament.png" class="layer-3-frame">
 
-        <img src="burung_terbang.gif" class="burung-gif" alt="Bird Animation">
+        <img src="burung_terbang.gif" class="bird-anim">
 
         <div class="layer-4-content">
-            <img src="logo_aa.png" class="logo-aa" alt="A&A Logo">
-            <a href="#" class="btn-buka">Buka Undangan</a>
+            <img src="logo_aa.png" class="logo-initial" alt="A&A">
+            <a href="javascript:void(0)" class="btn-open">Buka Undangan</a>
         </div>
 
-        <img src="bunga_kiri_atas.png" class="floral bunga-kiri-atas">
-        <img src="bunga_kanan_atas.png" class="floral bunga-kanan-atas">
-        <img src="bunga_tengah_atas_kiri.png" class="floral bunga-tengah-atas-kiri">
-        <img src="bunga_tengah_atas_kanan.png" class="floral bunga-tengah-atas-kanan">
+        <img src="bunga_kiri_atas.png" class="floral-element f-top-left">
+        <img src="bunga_kanan_atas.png" class="floral-element f-top-right">
+        <img src="bunga_tengah_atas_kiri.png" class="floral-element f-top-mid-left">
+        <img src="bunga_tengah_atas_kanan.png" class="floral-element f-top-mid-right">
 
-        <img src="bunga_bawah_tengah_back.png" class="floral bunga-bawah-tengah-back">
-        <img src="bunga_bawah_kiri.png" class="floral bunga-kiri-bawah">
-        <img src="bunga_bawah_kanan.png" class="floral bunga-kanan-bawah">
-        <img src="bunga_tengah_bawah_kiri.png" class="floral bunga-tengah-bawah-kiri">
-        <img src="bunga_tengah_bawah_kanan.png" class="floral bunga-tengah-bawah-kanan">
-        <img src="bunga_bawah_tengah.png" class="floral bunga-bawah-tengah">
+        <img src="bunga_bawah_tengah_back.png" class="floral-element f-bot-center-back">
+        <img src="bunga_bawah_kiri.png" class="floral-element f-bot-left">
+        <img src="bunga_bawah_kanan.png" class="floral-element f-bot-right">
+        <img src="bunga_tengah_bawah_kiri.png" class="floral-element f-bot-mid-left">
+        <img src="bunga_tengah_bawah_kanan.png" class="floral-element f-bot-mid-right">
+        <img src="bunga_bawah_tengah.png" class="floral-element f-bot-center">
+    </div>
 
-    </section>
+    <script>
+        // Memperbaiki masalah 100vh di browser mobile (Address bar)
+        const documentHeight = () => {
+            const doc = document.documentElement;
+            doc.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+        };
+        window.addEventListener('resize', documentHeight);
+        documentHeight();
 
+        // Mencegah bounce scroll berlebih tapi tetap izinkan refresh
+        let ts;
+        document.addEventListener('touchstart', function (e) {
+            ts = e.touches[0].clientY;
+        }, {passive: false});
+
+        document.addEventListener('touchmove', function (e) {
+            let te = e.touches[0].clientY;
+            // Jika mencoba scroll ke atas saat sudah di posisi 0, biarkan browser handle (untuk refresh)
+            if (window.scrollY <= 0 && te > ts) {
+                return; 
+            }
+        }, {passive: false});
+    </script>
 </body>
 </html>
