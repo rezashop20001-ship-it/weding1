@@ -3,83 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Digital - Final Fix</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Undangan Digital - Section Cover</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: 'Montserrat', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+        }
 
-        .main-wrapper {
+        /* Container Utama */
+        .cover-section {
             position: relative;
             width: 100%;
-            max-width: 450px;
             height: 100vh;
-            margin: 0 auto;
-            background-color: #fff;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
         }
 
-        /* LAYER DASAR */
-        .bg-wallpaper { position: absolute; inset: 0; z-index: 1; background: url('wallpaper.png') no-repeat center center; background-size: cover; }
-        .rumah-adat { position: absolute; bottom: 140px; left: 0; width: 100%; z-index: 2; object-fit: contain; }
-        .frame-ornament { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; background: url('frame_ornament.png') no-repeat center top; background-size: 100% 100%; pointer-events: none; }
+        /* --- LAYER 1: Background Dasar --- */
+        .layer-1-wallpaper {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
 
-        /* KONTEN */
-        .content-area { position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center; width: 80%; }
-        .logo-aa { width: 100%; max-width: 200px; margin-bottom: 15px; }
-        .btn-buka { background: #8b5e34; color: #fff; padding: 10px 25px; border-radius: 50px; font-weight: 600; font-size: 12px; }
+        /* --- LAYER 2: Rumah Adat --- */
+        .layer-2-rumah {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: auto;
+            max-height: 50%;
+            object-fit: contain;
+            z-index: 2;
+        }
 
-        .floral { position: absolute; pointer-events: none; }
+        /* --- LAYER 3: Frame Ornamen --- */
+        .layer-3-frame {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%; height: 95%;
+            object-fit: contain;
+            z-index: 3;
+            pointer-events: none;
+        }
 
-        /* AREA PINK (Tengah Atas) */
-        .f-pink-l { top: 25%; left: -5%; width: 35%; z-index: 50; } 
-        .f-pink-r { top: 25%; right: -5%; width: 35%; z-index: 50; }
+        /* --- LAYER 4: Konten Utama --- */
+        .layer-4-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: -50px; /* Menyesuaikan posisi agar di tengah frame */
+        }
 
-        /* AREA HIJAU (Tengah Bawah) - DIBAWAHIN LAGI BIAR NYAMBUNG KE BAWAH */
-        .f-hijau-l { bottom: 15%; left: -5%; width: 35%; z-index: 60; } 
-        .f-hijau-r { bottom: 15%; right: -5%; width: 35%; z-index: 60; }
-
-        /* AREA BIRU (BUNGA BAWAH) - PAKSA TIMBUL */
-        /* Kiri & Kanan Bawah: Kita pake bottom: 20px biar dia naik ke area layar */
-        .f-biru-l { bottom: 20px; left: -10px; width: 45%; z-index: 2000 !important; } 
-        .f-biru-r { bottom: 20px; right: -10px; width: 45%; z-index: 2000 !important; }
+        .logo-aa { width: 180px; height: auto; }
         
-        /* Bunga Tengah Bawah (Paling depan, nutup pondasi) */
-        .f-biru-center-back { bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; z-index: 1500; opacity: 0.9; }
-        .f-biru-center-front { bottom: 0px; left: 50%; transform: translateX(-50%); width: 105%; z-index: 3000 !important; }
+        .btn-buka {
+            background-color: #96693d;
+            color: white;
+            padding: 12px 35px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
 
-        /* Pojok Atas */
-        .f-atas-l { top: 0; left: 0; width: 40%; z-index: 40; }
-        .f-atas-r { top: 0; right: 0; width: 40%; z-index: 40; }
+        /* --- LAYER DEKORASI FLORAL (Z-INDEX 20+) --- */
+        .floral {
+            position: absolute;
+            z-index: 20;
+            pointer-events: none; /* Agar tidak menghalangi klik tombol */
+        }
+
+        /* Atas */
+        .bunga-kiri-atas { top: 0; left: 0; width: 40%; }
+        .bunga-kanan-atas { top: 0; right: 0; width: 40%; }
+        .bunga-tengah-atas-kiri { top: 0; left: 15%; width: 30%; z-index: 21; }
+        .bunga-tengah-atas-kanan { top: 0; right: 15%; width: 30%; z-index: 21; }
+
+        /* Bawah */
+        .bunga-kiri-bawah { bottom: 0; left: 0; width: 45%; z-index: 25; }
+        .bunga-kanan-bawah { bottom: 0; right: 0; width: 45%; z-index: 25; }
+        .bunga-tengah-bawah-kiri { bottom: 0; left: 10%; width: 35%; z-index: 24; }
+        .bunga-tengah-bawah-kanan { bottom: 0; right: 10%; width: 35%; z-index: 24; }
+        
+        .bunga-bawah-tengah { 
+            bottom: 0; left: 50%; 
+            transform: translateX(-50%); 
+            width: 60%; z-index: 26; 
+        }
+        .bunga-bawah-tengah-back { 
+            bottom: 5px; left: 50%; 
+            transform: translateX(-50%); 
+            width: 70%; z-index: 23; 
+            opacity: 0.8;
+        }
+
+        /* --- ELEMEN BURUNG (GIF) --- */
+        .burung-gif {
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 80px;
+            z-index: 5;
+            opacity: 0.7;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="main-wrapper">
-        <div class="bg-wallpaper"></div>
-        <img src="rumah_adat.png" class="rumah-adat">
-        <div class="frame-ornament"></div>
+    <section class="cover-section">
+        <img src="wallpaper.png" class="layer-1-wallpaper" alt="Background">
 
-        <div class="content-area">
-            <img src="logo_initial_gold.png" class="logo-aa">
-            <button class="btn-buka">BUKA UNDANGAN</button>
+        <img src="rumah_adat.png" class="layer-2-rumah" alt="Rumah Adat">
+
+        <img src="frame_ornament.png" class="layer-3-frame" alt="Frame">
+
+        <img src="burung_terbang.gif" class="burung-gif" alt="Bird Animation">
+
+        <div class="layer-4-content">
+            <img src="logo_aa.png" class="logo-aa" alt="A&A Logo">
+            <a href="#" class="btn-buka">Buka Undangan</a>
         </div>
 
-        <img src="bunga_kiri_atas.png" class="floral f-atas-l">
-        <img src="bunga_kanan_atas.png" class="floral f-atas-r">
+        <img src="bunga_kiri_atas.png" class="floral bunga-kiri-atas">
+        <img src="bunga_kanan_atas.png" class="floral bunga-kanan-atas">
+        <img src="bunga_tengah_atas_kiri.png" class="floral bunga-tengah-atas-kiri">
+        <img src="bunga_tengah_atas_kanan.png" class="floral bunga-tengah-atas-kanan">
 
-        <img src="bunga_tengah_atas_kiri.png" class="floral f-pink-l">
-        <img src="bunga_tengah_atas_kanan.png" class="floral f-pink-r">
+        <img src="bunga_bawah_tengah_back.png" class="floral bunga-bawah-tengah-back">
+        <img src="bunga_bawah_kiri.png" class="floral bunga-kiri-bawah">
+        <img src="bunga_bawah_kanan.png" class="floral bunga-kanan-bawah">
+        <img src="bunga_tengah_bawah_kiri.png" class="floral bunga-tengah-bawah-kiri">
+        <img src="bunga_tengah_bawah_kanan.png" class="floral bunga-tengah-bawah-kanan">
+        <img src="bunga_bawah_tengah.png" class="floral bunga-bawah-tengah">
 
-        <img src="bunga_tengah_bawah_kiri.png" class="floral f-hijau-l">
-        <img src="bunga_tengah_bawah_kanan.png" class="floral f-hijau-r">
-
-        <img src="bunga_bawah_tengah_back.png" class="floral f-biru-center-back">
-        <img src="bunga_bawah_kiri.png" class="floral f-biru-l">
-        <img src="bunga_bawah_kanan.png" class="floral f-biru-r">
-        <img src="bunga_bawah_tengah.png" class="floral f-biru-center-front">
-
-    </div>
+    </section>
 
 </body>
 </html>
