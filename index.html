@@ -8,7 +8,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #333; font-family: 'Montserrat', sans-serif; }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #222; font-family: 'Montserrat', sans-serif; }
 
         .main-wrapper {
             position: relative;
@@ -22,33 +22,45 @@
 
         /* LAYER DASAR */
         .bg-wallpaper { position: absolute; inset: 0; z-index: 1; background: url('wallpaper.png') no-repeat center center; background-size: cover; }
-        .rumah-adat { position: absolute; bottom: 80px; left: 0; width: 100%; z-index: 2; object-fit: contain; }
+        
+        /* Rumah Adat agak dinaikkan sedikit biar pondasinya tidak terlalu mepet bawah */
+        .rumah-adat { position: absolute; bottom: 100px; left: 0; width: 100%; z-index: 2; object-fit: contain; }
+        
         .frame-ornament { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; background: url('frame_ornament.png') no-repeat center top; background-size: 100% 100%; pointer-events: none; }
 
-        /* KONTEN TENGAH */
-        .content-area { position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center; width: 85%; }
-        .logo-aa { width: 100%; max-width: 260px; margin-bottom: 25px; }
-        .btn-buka { background-color: #8b5e34; color: #fff; padding: 12px 35px; border-radius: 50px; font-weight: 600; font-size: 13px; letter-spacing: 1.5px; box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+        /* KONTEN TENGAH (Logo & Tombol) */
+        .content-area { position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center; width: 85%; }
+        .logo-aa { width: 100%; max-width: 240px; margin-bottom: 20px; }
+        .btn-buka { background-color: #8b5e34; color: #fff; padding: 12px 35px; border-radius: 50px; font-weight: 600; font-size: 13px; letter-spacing: 1.5px; box-shadow: 0 8px 15px rgba(0,0,0,0.3); }
 
-        /* SISTEM FLORAL TEROPTIMASI */
-        .floral { position: absolute; z-index: 30; pointer-events: none; }
+        /* SISTEM FLORAL REVISI TOTAL */
+        .floral { position: absolute; pointer-events: none; }
 
-        /* AREA PINK (Bunga Tengah Atas) - Menempel ke bingkai samping */
-        .f-mid-top-l { top: 20%; left: -5%; width: 40%; } /* Pink Kiri */
-        .f-mid-top-r { top: 20%; right: -5%; width: 40%; } /* Pink Kanan */
+        /* 1. Bunga Pojok Paling Atas */
+        .f-corner-tl { top: 0; left: 0; width: 45%; z-index: 30; }
+        .f-corner-tr { top: 0; right: 0; width: 45%; z-index: 30; }
 
-        /* AREA HIJAU (Bunga Tengah Bawah) - Di atas rumah adat */
-        .f-mid-bot-l { bottom: 25%; left: -5%; width: 35%; } /* Hijau Kiri */
-        .f-mid-bot-r { bottom: 25%; right: -5%; width: 35%; } /* Hijau Kanan */
+        /* 2. AREA PINK (Tengah Atas Samping) - DIBEBAWAHIN DIKIT */
+        .f-mid-top-l { top: 25%; left: -5%; width: 40%; z-index: 31; } 
+        .f-mid-top-r { top: 25%; right: -5%; width: 40%; z-index: 31; }
 
-        /* AREA BIRU (Bunga Dasar Paling Bawah) */
-        .f-base-l { bottom: -10px; left: -5%; width: 45%; z-index: 40; } /* Biru Kiri */
-        .f-base-r { bottom: -10px; right: -5%; width: 45%; z-index: 40; } /* Biru Kanan */
-        .f-base-center { bottom: -20px; left: 50%; transform: translateX(-50%); width: 110%; z-index: 45; } /* Biru Tengah (Penutup Pondasi) */
+        /* 3. AREA HIJAU (Tengah Bawah Samping) - DIBAWAHIN LAGI BIAR GAK DEMPET */
+        .f-mid-bot-l { bottom: 18%; left: -8%; width: 38%; z-index: 32; } 
+        .f-mid-bot-r { bottom: 18%; right: -8%; width: 38%; z-index: 32; }
 
-        /* Bunga Pojok Atas (Tetap Ada) */
-        .f-corner-tl { top: 0; left: 0; width: 40%; }
-        .f-corner-tr { top: 0; right: 0; width: 40%; }
+        /* 4. AREA BIRU (Bunga Dasar) - DIBUAT TIMBUL PALING DEPAN */
+        /* Bawah Kiri & Kanan */
+        .f-base-l { bottom: -5px; left: -5%; width: 48%; z-index: 100; } 
+        .f-base-r { bottom: -5px; right: -5%; width: 48%; z-index: 100; }
+        
+        /* Bunga Dasar Tengah (Penutup Pondasi Rumah) */
+        .f-base-center { 
+            bottom: -20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 110%; 
+            z-index: 110; /* Z-index tertinggi agar menimpa semua di bawah */
+        }
 
         .bird-gif { position: absolute; top: 12%; right: 15%; width: 70px; z-index: 4; opacity: 0.8; }
     </style>
@@ -68,7 +80,6 @@
 
         <img src="bunga_kiri_atas.png" class="floral f-corner-tl">
         <img src="bunga_kanan_atas.png" class="floral f-corner-tr">
-
         <img src="bunga_tengah_atas_kiri.png" class="floral f-mid-top-l">
         <img src="bunga_tengah_atas_kanan.png" class="floral f-mid-top-r">
 
